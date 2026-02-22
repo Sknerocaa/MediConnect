@@ -117,25 +117,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Journey */}
-      <section className="section-padding bg-gray-50/50">
-        <div className="container-custom">
-          <FadeIn className="text-center mb-20">
-            <h2 className="text-[40px] font-bold text-gray-900">Our medical journey</h2>
-          </FadeIn>
-          <div className="grid md:grid-cols-4 gap-8">
-            {milestones.map((m, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <div className="relative group">
-                  <div className="text-4xl font-black text-brand-500/10 group-hover:text-brand-500/20 transition-colors mb-4">{m.year}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{m.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed font-sans">{m.desc}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* CTA */}
       <section className="section-padding bg-white text-center">
