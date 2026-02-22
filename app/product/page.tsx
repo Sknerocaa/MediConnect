@@ -35,13 +35,13 @@ export default function ProductPage() {
   const features = [
     {
       icon: <Bed className="w-8 h-8" />,
-      title: "Real-Time Bed Network",
+      title: "Real-Time Network",
       desc: "Live availability across every connected hospital — ICU, general, ventilator — in a single dashboard.",
       color: "#0A5C9E"
     },
     {
       icon: <FileText className="w-8 h-8" />,
-      title: "Secure Record Exchange",
+      title: "Blockchain Based Data Storage",
       desc: "HIPAA-style encryption with granular consent controls and full audit trails for patient safety.",
       color: "#2AA9A1"
     },
@@ -50,24 +50,6 @@ export default function ProductPage() {
       title: "Inventory Coordination",
       desc: "Blood, medicine, and critical equipment — coordinate across hospitals with smart shortage prediction.",
       color: "#0A5C9E"
-    },
-    {
-      icon: <Ambulance className="w-8 h-8" />,
-      title: "Emergency Routing",
-      desc: "Smartly match critical patients to the nearest facility with capacity — because every second matters.",
-      color: "#2AA9A1"
-    },
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Enterprise Security",
-      desc: "End-to-end encryption, role-based access control, and ISO 27001-aligned data handling protocols.",
-      color: "#0A5C9E"
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Network Analytics",
-      desc: "Occupancy trends, transfer patterns, and demand forecasting — data-driven decisions at scale.",
-      color: "#2AA9A1"
     }
   ];
 
@@ -89,8 +71,8 @@ export default function ProductPage() {
             <span className="text-xl font-bold text-gray-900 tracking-tight">MediConnect</span>
           </Link>
           <div className="hidden md:flex items-center gap-10">
-            {["Product", "Pricing", "About", "Contact"].map((item) => (
-              <Link key={item} href={`/${item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'Product' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
+            {["Product", "Plan", "About", "Contact"].map((item) => (
+              <Link key={item} href={`/${item === 'Plan' ? 'pricing' : item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'Product' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
                 {item}
               </Link>
             ))}
@@ -147,52 +129,6 @@ export default function ProductPage() {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{step.desc}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="section-padding bg-white">
-        <div className="container-custom">
-          <div className="text-center mb-20">
-            <FadeIn>
-              <h2 className="text-[40px] font-bold text-gray-900 mb-6">Hospitals that trust MediConnect</h2>
-            </FadeIn>
-          </div>
-          
-          <div className="max-w-4xl mx-auto space-y-12">
-            {[
-              {
-                quote: "MediConnect reduced our emergency transfer time by 60%. It's become indispensable for our network operations.",
-                author: "Dr. Priya Mehta",
-                role: "CMO, Apollo Network"
-              },
-              {
-                quote: "The bed visibility dashboard alone has saved us from countless overcapacity situations during peak flu seasons.",
-                author: "Rahul Sharma",
-                role: "CTO, Fortis Healthcare"
-              }
-            ].map((t, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-gray-50 p-12 rounded-3xl border border-gray-100 relative">
-                  <span className="absolute top-8 left-10 text-brand-200 text-8xl font-serif leading-none italic select-none">“</span>
-                  <div className="relative z-10">
-                    <p className="text-2xl font-sans text-gray-700 italic mb-8 leading-relaxed">
-                      {t.quote}
-                    </p>
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center font-bold text-brand-600">
-                        {t.author.charAt(4)}
-                      </div>
-                      <div>
-                        <div className="font-bold text-gray-900">{t.author}</div>
-                        <div className="text-sm font-semibold text-gray-400 uppercase tracking-widest">{t.role}</div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </FadeIn>
             ))}

@@ -55,8 +55,8 @@ export default function AboutPage() {
             <span className="text-xl font-bold font-display text-gray-900 tracking-tight">MediConnect</span>
           </Link>
           <div className="hidden md:flex items-center gap-10">
-            {["Product", "Pricing", "About", "Contact"].map((item) => (
-              <Link key={item} href={`/${item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'About' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
+            {["Product", "Plan", "About", "Contact"].map((item) => (
+              <Link key={item} href={`/${item === 'Plan' ? 'pricing' : item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'About' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
                 {item}
               </Link>
             ))}
@@ -142,7 +142,7 @@ export default function AboutPage() {
         <div className="container-custom">
           <FadeIn>
             <h2 className="text-[40px] font-bold text-gray-900 mb-6">Join a mission that matters</h2>
-            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">We're always looking for clinical partners, talented engineers, and hospital networks ready to innovate.</p>
+            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">We're always looking for clinical partners, clinicians, and hospital networks ready to innovate.</p>
             <Link href="/contact" className="btn-primary inline-flex items-center gap-3">
               Get in Touch <ArrowRight className="w-5 h-5" />
             </Link>

@@ -82,20 +82,8 @@ const plans = [
 
 const faqs = [
   {
-    q: "How long does implementation take?",
-    a: "Most hospitals go live within 24–48 hours. Our integration team handles the HMS mapping to ensure zero disruption to your workflow."
-  },
-  {
-    q: "Do we need to replace our existing HMS?",
-    a: "No. MediConnect is designed to layer on top of your existing HMS, EMR, or ERP systems using standard APIs or database connectors."
-  },
-  {
     q: "Is patient data secure and compliant?",
     a: "We use AES-256 bank-grade encryption and are fully aligned with ISO 27001 and Indian healthcare cybersecurity guidelines."
-  },
-  {
-    q: "Can we add or remove hospitals later?",
-    a: "Yes. MediConnect is built for networks. You can easily onboard new facilities or scale down based on your facility's operational needs."
   }
 ];
 
@@ -114,8 +102,8 @@ export default function PricingPage() {
             <span className="text-xl font-bold text-gray-900 tracking-tight">MediConnect</span>
           </Link>
           <div className="hidden md:flex items-center gap-10">
-            {["Product", "Pricing", "About", "Contact"].map((item) => (
-              <Link key={item} href={`/${item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'Pricing' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
+            {["Product", "Plan", "About", "Contact"].map((item) => (
+              <Link key={item} href={`/${item === 'Plan' ? 'pricing' : item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'Plan' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
                 {item}
               </Link>
             ))}
@@ -252,7 +240,7 @@ export default function PricingPage() {
             <span className="text-xl font-bold text-gray-900 tracking-tight">MediConnect</span>
           </Link>
           <div className="flex justify-center gap-10 mb-10">
-            {["Product", "Pricing", "About", "Contact", "Privacy"].map((l) => (
+            {["Product", "Plan", "About", "Contact", "Privacy"].map((l) => (
               <Link key={l} href="#" className="text-sm font-bold text-gray-400 hover:text-brand-500 uppercase tracking-widest">{l}</Link>
             ))}
           </div>

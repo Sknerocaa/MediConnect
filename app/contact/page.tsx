@@ -33,8 +33,8 @@ export default function ContactPage() {
             <span className="text-xl font-bold font-display text-gray-900 tracking-tight">MediConnect</span>
           </Link>
           <div className="hidden md:flex items-center gap-10">
-            {["Product", "Pricing", "About", "Contact"].map((item) => (
-              <Link key={item} href={`/${item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'Contact' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
+            {["Product", "Plan", "About", "Contact"].map((item) => (
+              <Link key={item} href={`/${item === 'Plan' ? 'pricing' : item.toLowerCase()}`} className={`text-sm font-semibold ${item === 'Contact' ? 'text-brand-500' : 'text-gray-600 hover:text-brand-500'} transition-colors`}>
                 {item}
               </Link>
             ))}
@@ -113,7 +113,7 @@ export default function ContactPage() {
               {[
                 { icon: <Mail className="w-6 h-6" />, title: "Email clinical support", desc: "hello@mediconnect.in", sub: "Replies within 4 hours" },
                 { icon: <Phone className="w-6 h-6" />, title: "Call medical sales", desc: "+91 80 4567 8900", sub: "Mon–Fri, 9am–6pm IST" },
-                { icon: <MapPin className="w-6 h-6" />, title: "Visit headquarters", desc: "Koramangala, Bengaluru", sub: "Karnataka, India 560034" }
+                { icon: <MapPin className="w-6 h-6" />, title: "Visit headquarters", desc: "Ghaziabad", sub: "Uttar Pradesh, India" }
               ].map((item, i) => (
                 <div key={i} className="flex gap-6 group">
                   <div className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center text-brand-500 group-hover:bg-brand-500 group-hover:text-white transition-all shadow-sm">

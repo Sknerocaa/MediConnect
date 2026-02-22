@@ -102,8 +102,8 @@ export default function HomePage() {
           </Link>
           
           <div className="hidden md:flex items-center gap-10">
-            {["Product", "Pricing", "About", "Contact"].map((item) => (
-              <Link key={item} href={`/${item.toLowerCase()}`} className="text-sm font-semibold text-gray-600 hover:text-brand-500 transition-colors">
+            {["Product", "Plan", "About", "Contact"].map((item) => (
+              <Link key={item} href={`/${item === 'Plan' ? 'pricing' : item.toLowerCase()}`} className="text-sm font-semibold text-gray-600 hover:text-brand-500 transition-colors">
                 {item}
               </Link>
             ))}
@@ -205,7 +205,7 @@ export default function HomePage() {
               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Product</h4>
               <ul className="space-y-4">
                 <li><Link href="/product" className="text-sm font-semibold text-gray-600 hover:text-brand-500">Features</Link></li>
-                <li><Link href="/pricing" className="text-sm font-semibold text-gray-600 hover:text-brand-500">Pricing</Link></li>
+                <li><Link href="/pricing" className="text-sm font-semibold text-gray-600 hover:text-brand-500">Plan</Link></li>
                 <li><Link href="/demo" className="text-sm font-semibold text-gray-600 hover:text-brand-500">Demo</Link></li>
               </ul>
             </div>
