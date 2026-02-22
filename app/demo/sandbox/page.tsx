@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Activity,
   Bell,
@@ -26,6 +26,9 @@ import {
   Wifi,
   X,
   Hospital,
+  Search,
+  Building2,
+  Smartphone,
 } from "lucide-react";
 import {
   AreaChart,
@@ -158,6 +161,11 @@ export default function SandboxPage() {
   const [hospitalName, setHospitalName] = useState("Demo Hospital");
   const [selectedHospital, setSelectedHospital] = useState<number | null>(null);
   const [alertsOpen, setAlertsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [patientFound, setPatientFound] = useState(false);
+  const [consentRequested, setConsentRequested] = useState(false);
+  const [consentGranted, setConsentGranted] = useState(false);
+  const [simulatedMobile, setSimulatedMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -490,50 +498,7 @@ export default function SandboxPage() {
           </div>
         </div>
 
-        {/* Section 4: Transfer Feed */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm mb-8">
-          <div className="px-6 py-5 border-b border-gray-50 flex items-center justify-between">
-            <h3 className="font-bold text-gray-900 text-sm">
-              Inter-Hospital Transfer Feed
-            </h3>
-            <div className="flex items-center gap-2 text-emerald-500">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] font-bold uppercase tracking-widest">Live</span>
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-gray-50/50">
-                  <th className="text-left px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    From → To
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    Condition
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {transfers.map((t, i) => (
-                  <tr key={i} className="border-t border-gray-50 hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">
-                      {t.from} <span className="text-gray-300 mx-1">→</span> {t.to}
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">{t.condition}</td>
-                    <td className="px-6 py-4">
-                      <span className="flex items-center gap-2 font-semibold">
-                        {t.statusIcon} {t.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+
 
         {/* Section 5: Critical Resource Coordination */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -610,63 +575,207 @@ export default function SandboxPage() {
           </div>
         </div>
 
-        {/* Section 6: Secure Record Transfer Log */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm mb-8">
-          <div className="px-6 py-5 border-b border-gray-50 flex items-center justify-between">
-            <h3 className="font-bold text-gray-900 text-sm flex items-center gap-2">
-              <FileText className="w-4 h-4 text-brand-500" /> Secure Record Transfer Log
-            </h3>
-            <div className="flex items-center gap-2">
-              <Lock className="w-3.5 h-3.5 text-emerald-500" />
-              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">
-                End-to-End Encrypted
-              </span>
-              <span className="mx-2 text-gray-200">|</span>
-              <ShieldCheck className="w-3.5 h-3.5 text-brand-500" />
-              <span className="text-[10px] font-bold text-brand-600 uppercase tracking-widest">
-                HIPAA-Aligned
-              </span>
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-gray-50/50">
-                  <th className="text-left px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    Patient ID
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    From
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    To
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {recordLogs.map((r, i) => (
-                  <tr key={i} className="border-t border-gray-50 hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4 font-mono font-bold text-brand-500">{r.id}</td>
-                    <td className="px-6 py-4 text-gray-700 font-semibold">{r.from}</td>
-                    <td className="px-6 py-4 text-gray-700 font-semibold">{r.to}</td>
-                    <td className="px-6 py-4">
-                      {r.status === "Sent" ? (
-                        <span className="flex items-center gap-1.5 text-emerald-600 font-semibold">
-                          <CheckCircle2 className="w-4 h-4" /> Records Sent
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-1.5 text-amber-500 font-semibold">
-                          <Clock className="w-4 h-4" /> Pending Upload
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+
+        {/* Section 6.5: Patient Profile & Consent Simulation (Network-Wide Patient History) */}
+        <div className="mb-8">
+          <h2 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-5">
+            Cross-Hospital Patient Search (Consent Simulation)
+          </h2>
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col items-center p-8">
+            {!patientFound ? (
+              <div className="max-w-md w-full text-center space-y-5 py-6">
+                <Search className="w-12 h-12 text-gray-300 mx-auto" />
+                <h3 className="text-xl font-bold text-gray-900">Locate Patient in Network</h3>
+                <p className="text-sm text-gray-500">Search using ABHA ID or MediConnect ID to securely pull patient history from any network hospital.</p>
+                <div className="mb-4 text-xs font-semibold text-brand-600 bg-brand-50 border border-brand-100 px-4 py-2 rounded-lg mt-2">
+                  Demo Target IDs available to scan: <br/> 
+                  <strong>PT-2031, PT-5502, PT-8910</strong>
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Enter ID (e.g. PT-2031)"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-shadow"
+                  />
+                  <button
+                    onClick={() => { if (searchQuery) setPatientFound(true); }}
+                    className="px-6 py-3 bg-brand-500 text-white font-bold rounded-xl text-sm"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            ) : !consentGranted ? (
+              <div className="w-full flex items-center justify-between gap-12 bg-white rounded-xl">
+                <div className="flex-1 p-8 text-center bg-gray-50 border border-dashed border-gray-200 rounded-2xl">
+                  <ShieldCheck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Patient Target: Ramesh Kumar</h3>
+                  <p className="text-sm text-gray-500 mb-6 max-w-sm mx-auto">
+                    Patient records found across 3 hospitals. However, there is no active consent to view this patient's history.
+                  </p>
+                  <button
+                    onClick={() => { setConsentRequested(true); setSimulatedMobile(true); }}
+                    className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl text-sm shadow-md shadow-blue-500/20 hover:bg-blue-700 transition-colors"
+                    disabled={consentRequested}
+                  >
+                    {consentRequested ? "Awaiting Approval..." : "Request Access (Simulate SMS)"}
+                  </button>
+                </div>
+
+                <AnimatePresence>
+                  {simulatedMobile && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      className="w-[320px] h-[600px] bg-slate-900 rounded-[40px] border-[8px] border-slate-800 flex flex-col relative overflow-hidden flex-shrink-0 shadow-2xl"
+                    >
+                      <div className="w-32 h-6 bg-slate-800 absolute top-0 left-1/2 -translate-x-1/2 rounded-b-2xl" />
+                      <div className="flex-1 px-5 pt-16 flex flex-col gap-4 bg-slate-50">
+                        <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
+                          <div className="w-12 h-12 bg-brand-50 text-brand-500 rounded-full flex items-center justify-center mb-3">
+                            <Activity className="w-6 h-6" />
+                          </div>
+                          <h4 className="font-bold text-slate-800 text-lg mb-1">Consent Request</h4>
+                          <p className="text-xs text-slate-500 leading-relaxed mb-5">
+                            <strong>Apollo Hospital, Delhi</strong> is requesting access to your entire MediConnect medical history for <strong className="text-slate-800">24 hours</strong>.
+                          </p>
+                          <div className="w-full space-y-2">
+                            <button
+                              onClick={() => { setConsentGranted(true); setSimulatedMobile(false); }}
+                              className="w-full py-3 bg-emerald-500 text-white font-bold rounded-xl text-sm"
+                            >
+                              Approve Access
+                            </button>
+                            <button
+                              onClick={() => { setPatientFound(false); setSimulatedMobile(false); setConsentRequested(false); }}
+                              className="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl text-sm"
+                            >
+                              Deny
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <div className="w-full relative">
+                <button
+                  onClick={() => { setPatientFound(false); setConsentGranted(false); setConsentRequested(false); setSearchQuery(""); }}
+                  className="absolute top-0 right-0 p-2 text-gray-400 hover:text-gray-600 bg-gray-100 rounded-lg transition-colors z-10"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                <div className="w-full flex items-start gap-8">
+                  <div className="w-1/3 bg-gray-50 border border-gray-200 rounded-2xl p-6">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 bg-brand-500 text-white font-bold text-xl rounded-2xl flex items-center justify-center">
+                        RK
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 text-lg">Ramesh Kumar</h4>
+                        <div className="text-sm font-medium text-emerald-600 flex items-center gap-1 mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Consent Active (24h)
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="bg-white p-3 rounded-xl border border-gray-100 text-sm">
+                        <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1">Blood Group</span>
+                        <span className="font-bold text-gray-800">O+</span>
+                      </div>
+                      <div className="bg-white p-3 rounded-xl border border-gray-100 text-sm">
+                        <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1">Chronic</span>
+                        <span className="font-bold text-gray-800">Diabetes Type 2, Hypertension</span>
+                      </div>
+                      <div className="bg-white p-3 rounded-xl border border-red-50 text-sm border-l-4 border-l-red-500">
+                        <span className="text-red-400 text-xs font-bold uppercase tracking-wider block mb-1">Allergies</span>
+                        <span className="font-bold text-red-800">Penicillin</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 bg-white border border-gray-200 rounded-2xl p-6">
+                    <h4 className="font-bold text-gray-900 text-lg mb-6 flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-brand-500" /> Complete Network Timeline
+                    </h4>
+                    <div className="relative border-l-2 border-slate-100 ml-3 space-y-8 pb-4">
+                      <div className="relative pl-6">
+                        <div className="absolute -left-[21px] top-0 w-10 h-10 rounded-full bg-emerald-50 border-4 border-white flex items-center justify-center shadow-sm">
+                          <Activity className="w-4 h-4 text-emerald-500" />
+                        </div>
+                        <div className="bg-emerald-50/50 border border-emerald-100/50 rounded-xl p-4">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="font-bold text-sm text-gray-900">Apollo Hospital (Current)</span>
+                            <span className="text-xs font-bold text-emerald-600 px-2 py-0.5 bg-emerald-100 rounded">Today</span>
+                          </div>
+                          <div className="space-y-2 mt-3">
+                            <div className="flex gap-3 text-sm">
+                              <span className="text-gray-400 text-xs w-16 pt-0.5">10:30 AM</span>
+                              <div>
+                                <strong className="text-gray-800 block">Admission</strong>
+                                <span className="text-gray-600">Admitted with chest pain</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-3 text-sm">
+                              <span className="text-gray-400 text-xs w-16 pt-0.5">12:00 PM</span>
+                              <div>
+                                <strong className="text-emerald-600 block">Rx</strong>
+                                <span className="text-gray-600">Prescribed: Aspirin, Nitroglycerin</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="relative pl-6">
+                        <div className="absolute -left-[21px] top-0 w-10 h-10 rounded-full bg-amber-50 border-4 border-white flex items-center justify-center shadow-sm">
+                          <AlertTriangle className="w-4 h-4 text-amber-500" />
+                        </div>
+                        <div className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="font-bold text-sm text-gray-900">City Hospital</span>
+                            <span className="text-xs font-bold text-gray-500 px-2 py-0.5 bg-gray-100 rounded">Yesterday</span>
+                          </div>
+                          <div className="space-y-2 mt-3">
+                            <div className="flex gap-3 text-sm">
+                              <span className="text-gray-400 text-xs w-16 pt-0.5">08:45 PM</span>
+                              <div>
+                                <strong className="text-amber-600 block">Vitals</strong>
+                                <span className="text-gray-600">BP recorded: 180/95 (Hypertensive crisis)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="relative pl-6">
+                        <div className="absolute -left-[21px] top-0 w-10 h-10 rounded-full bg-blue-50 border-4 border-white flex items-center justify-center shadow-sm">
+                          <FileText className="w-4 h-4 text-blue-500" />
+                        </div>
+                        <div className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="font-bold text-sm text-gray-900">Fortis Hospital</span>
+                            <span className="text-xs font-bold text-gray-500 px-2 py-0.5 bg-gray-100 rounded">15 Mar 2026</span>
+                          </div>
+                          <div className="flex gap-3 text-sm mt-3">
+                            <span className="text-gray-400 text-xs w-16 pt-0.5">Morning</span>
+                            <div>
+                              <strong className="text-blue-600 block">Lab Reports</strong>
+                              <span className="text-gray-600">HbA1c: 7.8% (Uncontrolled). Lipid Profile: LDL 145 mg/dL</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
