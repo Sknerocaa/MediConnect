@@ -110,6 +110,108 @@ export default function ProductPage() {
         </div>
       </section>
 
+      {/* Patient Data Storage Block */}
+      <section className="section-padding bg-brand-50 border-y border-brand-100">
+        <div className="container-custom">
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            <FadeIn className="flex-1">
+              <div className="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center text-brand-500 mb-8">
+                <Shield className="w-8 h-8" />
+              </div>
+              <h2 className="text-[40px] font-bold text-gray-900 mb-6 leading-tight">We store patient data with <span className="text-brand-500">blockchain security.</span></h2>
+              <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                Your patients' data isn't just stored; it's secured using blockchain-based immutable ledgers. Every transfer, consent update, and medical record access is encrypted and fully auditable.
+              </p>
+              <ul className="space-y-4 mb-8">
+                {["Bank-grade AES-256 encryption", "Granular clinical consent controls", "ISO 27001 & healthcare compliant data storage"].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-brand-500 flex items-center justify-center text-white shrink-0">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span className="font-semibold text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </FadeIn>
+            <FadeIn delay={0.2} className="flex-1 w-full bg-white p-8 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-full border-b border-l border-brand-100" />
+               <div className="space-y-6 relative z-10">
+                 <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                   <div className="font-bold text-gray-900 text-lg">Patient Record #A-4829</div>
+                   <div className="px-3 py-1 bg-green-50 text-green-600 text-xs font-bold uppercase tracking-widest rounded-full border border-green-200">Encrypted</div>
+                 </div>
+                 <div className="space-y-4 pt-2">
+                   {[
+                     { action: "Data Encrypted & Stored", time: "10:42 AM", node: "Apollo Node" },
+                     { action: "Consent Verified by Dr. Sharma", time: "11:05 AM", node: "Network Auth" },
+                     { action: "Blockchain Hash Generated", time: "11:05 AM", node: "Ledger Sync" }
+                   ].map((log, i) => (
+                     <div key={i} className="flex items-start gap-4">
+                       <div className="w-2.5 h-2.5 rounded-full bg-brand-500 mt-1.5 shrink-0 shadow-sm" />
+                       <div>
+                         <div className="font-bold text-gray-800 text-sm mb-1">{log.action}</div>
+                         <div className="text-xs text-gray-400 font-mono font-medium">{log.time} — {log.node}</div>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Inventory Coordination Block */}
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <div className="flex flex-col md:flex-row-reverse items-center gap-12">
+            <FadeIn className="flex-1">
+              <div className="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 mb-8">
+                <Package className="w-8 h-8" />
+              </div>
+              <h2 className="text-[40px] font-bold text-gray-900 mb-6 leading-tight">Eliminate shortages with <span className="text-teal-500">smart inventory.</span></h2>
+              <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                Never get caught off-guard. Track blood units, critical medicines, and specialized equipment across your entire hospital network in real-time. Our predictive engine alerts you before critical shortages happen.
+              </p>
+              <ul className="space-y-4 mb-8">
+                {["Live cross-hospital inventory sync", "Predictive shortage alerts", "One-click internal supply requests"].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-white shrink-0">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span className="font-semibold text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </FadeIn>
+            <FadeIn delay={0.2} className="flex-1 w-full bg-white p-8 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden">
+               <div className="absolute top-0 left-0 w-32 h-32 bg-teal-50 rounded-br-full border-b border-r border-teal-100" />
+               <div className="space-y-6 relative z-10">
+                 <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                   <div className="font-bold text-gray-900 text-lg">Central Blood Bank</div>
+                   <div className="px-3 py-1 bg-teal-50 text-teal-700 text-xs font-bold uppercase tracking-widest rounded-full border border-teal-200">Live Sync</div>
+                 </div>
+                 
+                 <div className="grid grid-cols-2 gap-4 pt-2">
+                   {[
+                     { type: "O Negative", count: "4 units", status: "Critical", color: "text-red-600", bg: "bg-red-50", border: "border-red-100" },
+                     { type: "A Positive", count: "24 units", status: "Optimal", color: "text-teal-600", bg: "bg-teal-50", border: "border-teal-100" },
+                     { type: "B Positive", count: "12 units", status: "Low", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-100" },
+                     { type: "AB Negative", count: "8 units", status: "Good", color: "text-teal-600", bg: "bg-teal-50", border: "border-teal-100" }
+                   ].map((blood, i) => (
+                     <div key={i} className={`p-4 rounded-2xl border ${blood.border} ${blood.bg}`}>
+                       <div className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-1">{blood.type}</div>
+                       <div className="font-black text-xl text-gray-900 mb-2">{blood.count}</div>
+                       <div className={`text-xs font-bold ${blood.color}`}>{blood.status}</div>
+                     </div>
+                   ))}
+                 </div>
+               </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="section-padding bg-gray-50">
         <div className="container-custom">
