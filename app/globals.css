@@ -1,26 +1,109 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-brand-50: #f0f9ff;
+  --color-brand-100: #e0f2fe;
+  --color-brand-200: #bae6fd;
+  --color-brand-300: #7dd3fc;
+  --color-brand-400: #38bdf8;
+  --color-brand-500: #0A5C9E;
+  --color-brand-600: #084a7e;
+  --color-brand-700: #063d68;
+  --color-brand-800: #053152;
+  --color-brand-900: #042843;
+
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #2AA9A1;
+  --color-teal-600: #228781;
+  --color-teal-700: #1b6b66;
+  --color-teal-800: #15534f;
+  --color-teal-900: #10403d;
+
+  --color-surface: #F9FAFB;
+  --color-surface-white: #ffffff;
+  --color-surface-muted: #6b7280;
+  --color-surface-border: #f3f4f6;
+
+  --spacing-section: 80px;
+  --spacing-mobile: 48px;
+  --spacing-card: 24px;
+  --spacing-gap: 32px;
+
+  --max-width-container: 1280px;
+
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@utility btn-primary {
+  @apply px-6 py-3 bg-brand-500 text-white rounded-lg font-semibold transition-all hover:bg-brand-600 active:scale-95 shadow-sm;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility btn-secondary {
+  @apply px-6 py-3 border border-brand-500 text-brand-500 rounded-lg font-semibold transition-all hover:bg-brand-50 active:scale-95;
+}
+
+@utility btn-outline {
+  @apply px-6 py-3 border border-gray-200 text-gray-700 rounded-lg font-semibold transition-all hover:bg-gray-50 active:scale-95;
+}
+
+@utility card-minimal {
+  @apply bg-white p-[spacing(card)] rounded-xl border border-gray-100 shadow-sm transition-shadow hover:shadow-md;
+}
+
+@utility badge-info {
+  @apply px-3 py-1 bg-brand-50 text-brand-600 rounded-full text-xs font-bold uppercase tracking-wider;
+}
+
+@utility input-field {
+  @apply w-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all outline-none;
+}
+
+@utility text-gradient-brand {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-teal-500;
+}
+
+@utility container-custom {
+  @apply max-w-[--max-width-container] mx-auto px-6;
+}
+
+@utility section-padding {
+  @apply py-[--spacing-section] px-6;
+}
+
+@utility grid-standard {
+  @apply grid gap-[--spacing-gap];
+}
+
+@utility hero-grid {
+  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@utility glass-nav {
+  @apply bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-surface text-gray-900 font-sans antialiased selection:bg-brand-100 selection:text-brand-900;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  @apply font-bold tracking-tight text-gray-900;
+  line-height: 1.2;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-50;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
 }

@@ -1,0 +1,413 @@
+// Prisma Schema for MediConnect
+// Healthcare interoperability platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Hospital ──────────────────────────────────────────────────────────────────
+model Hospital {
+  id               String            @id @default(cuid())
+  name             String
+  code             String            @unique
+  address          String
+  city             String
+  state            String
+  pincode          String
+  phone            String
+  email            String
+  license          String?
+  accreditation    String?
+  totalBeds        Int               @default(0)
+  latitude         Float?
+  longitude        Float?
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  users            User[]
+  beds             Bed[]
+  patients         Patient[]
+  admissions       Admission[]
+  inventory        InventoryItem[]
+  sentRequests     InventoryRequest[] @relation("SentRequests")
+  receivedRequests InventoryRequest[] @relation("ReceivedRequests")
+  outTransfers     Transfer[]         @relation("OutTransfers")
+  inTransfers      Transfer[]         @relation("InTransfers")
+  alerts           EmergencyAlert[]
+  medicalRecords   MedicalRecord[]
+  auditLogs        AuditLog[]
+
+  @@index([city, state])
+  @@index([isActive])
+}
+
+// ─── User & Auth ───────────────────────────────────────────────────────────────
+model User {
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+  phone           String?
+  role            UserRole  @default(DOCTOR)
+  hospitalId      String?
+  hospital        Hospital? @relation(fields: [hospitalId], references: [id])
+  twoFactorSecret String?
+  twoFactorEnabled Boolean  @default(false)
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  accounts        Account[]
+  sessions        Session[]
+  auditLogs       AuditLog[]
+  consentsGiven   Consent[] @relation("ConsentGrantedBy")
+
+  @@index([email])
+  @@index([hospitalId])
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  HOSPITAL_ADMIN
+  DOCTOR
+  NURSE
+  COORDINATOR
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Patient ───────────────────────────────────────────────────────────────────
+model Patient {
+  id               String          @id @default(cuid())
+  abhaId           String?         @unique
+  name             String
+  age              Int
+  gender           Gender
+  phone            String?
+  email            String?
+  address          String?
+  bloodGroup       String?
+  emergencyContact String?
+  emergencyPhone   String?
+  hospitalId       String
+  hospital         Hospital        @relation(fields: [hospitalId], references: [id])
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  admissions       Admission[]
+  medicalRecords   MedicalRecord[]
+  consents         Consent[]
+  transfers        Transfer[]
+
+  @@index([hospitalId])
+  @@index([name])
+  @@index([abhaId])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+// ─── Admission ─────────────────────────────────────────────────────────────────
+model Admission {
+  id           String          @id @default(cuid())
+  patientId    String
+  patient      Patient         @relation(fields: [patientId], references: [id])
+  hospitalId   String
+  hospital     Hospital        @relation(fields: [hospitalId], references: [id])
+  bedId        String?
+  bed          Bed?            @relation(fields: [bedId], references: [id])
+  department   String
+  doctor       String
+  status       AdmissionStatus @default(ACTIVE)
+  admittedAt   DateTime        @default(now())
+  dischargedAt DateTime?
+  diagnosis    String?
+  notes        String?         @db.Text
+
+  @@index([hospitalId])
+  @@index([patientId])
+  @@index([status])
+}
+
+enum AdmissionStatus {
+  ACTIVE
+  DISCHARGED
+  TRANSFERRED
+  DECEASED
+}
+
+// ─── Bed ───────────────────────────────────────────────────────────────────────
+model Bed {
+  id         String    @id @default(cuid())
+  number     String
+  ward       String
+  type       BedType
+  status     BedStatus @default(AVAILABLE)
+  hospitalId String
+  hospital   Hospital  @relation(fields: [hospitalId], references: [id])
+  updatedAt  DateTime  @updatedAt
+
+  admissions Admission[]
+
+  @@unique([number, hospitalId])
+  @@index([hospitalId, status])
+  @@index([type, status])
+}
+
+enum BedType {
+  GENERAL
+  ICU
+  VENTILATOR
+  NICU
+  PICU
+  ISOLATION
+  EMERGENCY
+}
+
+enum BedStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  MAINTENANCE
+}
+
+// ─── Inventory ─────────────────────────────────────────────────────────────────
+model InventoryItem {
+  id           String        @id @default(cuid())
+  name         String
+  category     ItemCategory
+  quantity     Int           @default(0)
+  unit         String
+  expiryDate   DateTime?
+  minStock     Int           @default(10)
+  location     String?
+  hospitalId   String
+  hospital     Hospital      @relation(fields: [hospitalId], references: [id])
+  updatedAt    DateTime      @updatedAt
+
+  @@index([hospitalId, category])
+  @@index([expiryDate])
+}
+
+enum ItemCategory {
+  MEDICINE
+  CONSUMABLE
+  EQUIPMENT
+  BLOOD
+}
+
+model InventoryRequest {
+  id             String               @id @default(cuid())
+  itemName       String
+  quantity       Int
+  urgency        RequestUrgency       @default(NORMAL)
+  status         InventoryRequestStatus @default(PENDING)
+  fromHospitalId String
+  fromHospital   Hospital             @relation("SentRequests", fields: [fromHospitalId], references: [id])
+  toHospitalId   String
+  toHospital     Hospital             @relation("ReceivedRequests", fields: [toHospitalId], references: [id])
+  notes          String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([fromHospitalId])
+  @@index([toHospitalId])
+  @@index([status])
+}
+
+enum RequestUrgency {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL
+}
+
+enum InventoryRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FULFILLED
+  CANCELLED
+}
+
+// ─── Transfer ──────────────────────────────────────────────────────────────────
+model Transfer {
+  id                String         @id @default(cuid())
+  patientId         String
+  patient           Patient        @relation(fields: [patientId], references: [id])
+  fromHospitalId    String
+  fromHospital      Hospital       @relation("OutTransfers", fields: [fromHospitalId], references: [id])
+  toHospitalId      String
+  toHospital        Hospital       @relation("InTransfers", fields: [toHospitalId], references: [id])
+  urgency           RequestUrgency @default(NORMAL)
+  status            TransferStatus @default(PENDING)
+  reason            String?
+  notes             String?        @db.Text
+  requestedAt       DateTime       @default(now())
+  acceptedAt        DateTime?
+  completedAt       DateTime?
+  ambulanceETA      Int?           // in minutes
+
+  @@index([fromHospitalId])
+  @@index([toHospitalId])
+  @@index([status])
+}
+
+enum TransferStatus {
+  PENDING
+  ACCEPTED
+  IN_TRANSIT
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+// ─── Medical Record ────────────────────────────────────────────────────────────
+model MedicalRecord {
+  id            String     @id @default(cuid())
+  patientId     String
+  patient       Patient    @relation(fields: [patientId], references: [id])
+  hospitalId    String
+  hospital      Hospital   @relation(fields: [hospitalId], references: [id])
+  type          RecordType
+  title         String
+  content       String     @db.Text
+  attachments   String[]
+  isEncrypted   Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+
+  @@index([patientId])
+  @@index([hospitalId])
+  @@index([type])
+}
+
+enum RecordType {
+  PRESCRIPTION
+  LAB_REPORT
+  IMAGING
+  DISCHARGE_SUMMARY
+  SURGICAL_NOTE
+  CLINICAL_NOTE
+}
+
+// ─── Consent ───────────────────────────────────────────────────────────────────
+model Consent {
+  id           String   @id @default(cuid())
+  patientId    String
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  grantedById  String
+  grantedBy    User     @relation("ConsentGrantedBy", fields: [grantedById], references: [id])
+  scope        String   // e.g., "medical_records", "transfer_history"
+  isActive     Boolean  @default(true)
+  expiresAt    DateTime?
+  createdAt    DateTime @default(now())
+  revokedAt    DateTime?
+
+  @@index([patientId])
+  @@index([isActive])
+}
+
+// ─── Emergency Alert ───────────────────────────────────────────────────────────
+model EmergencyAlert {
+  id           String             @id @default(cuid())
+  hospitalId   String
+  hospital     Hospital           @relation(fields: [hospitalId], references: [id])
+  type         EmergencyType
+  severity     AlertSeverity      @default(MEDIUM)
+  title        String
+  description  String             @db.Text
+  status       EmergencyStatus    @default(ACTIVE)
+  createdAt    DateTime           @default(now())
+  resolvedAt   DateTime?
+
+  @@index([hospitalId])
+  @@index([status])
+  @@index([severity])
+}
+
+enum EmergencyType {
+  BED_SHORTAGE
+  BLOOD_SHORTAGE
+  EQUIPMENT_FAILURE
+  MASS_CASUALTY
+  SUPPLY_SHORTAGE
+  OTHER
+}
+
+enum AlertSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum EmergencyStatus {
+  ACTIVE
+  ACKNOWLEDGED
+  RESOLVED
+  EXPIRED
+}
+
+// ─── Audit Log ─────────────────────────────────────────────────────────────────
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  hospitalId String?
+  hospital   Hospital? @relation(fields: [hospitalId], references: [id])
+  action     String
+  resource   String
+  resourceId String?
+  details    String?  @db.Text
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([hospitalId])
+  @@index([action])
+  @@index([createdAt])
+}
