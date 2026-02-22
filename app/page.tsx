@@ -11,7 +11,12 @@ import {
   Star, 
   Check, 
   ShieldCheck, 
-  Network
+  Network,
+  Heart,
+  Shield,
+  Stethoscope,
+  Microscope,
+  Crosshair
 } from "lucide-react";
 
 function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -87,7 +92,13 @@ function NetworkVisualization() {
 }
 
 export default function HomePage() {
-  const logos = ["Fortis", "Apollo", "Ruby", "Max", "City", "Narayana", "Medanta"];
+  const logos = [
+    { name: "CarePlus+", icon: <Heart className="w-6 h-6" /> },
+    { name: "MedLife", icon: <Activity className="w-6 h-6" /> },
+    { name: "HealthCorp", icon: <Shield className="w-6 h-6" /> },
+    { name: "NovaCare", icon: <Stethoscope className="w-6 h-6" /> },
+    { name: "ApexMed", icon: <Microscope className="w-6 h-6" /> },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -188,10 +199,13 @@ export default function HomePage() {
       {/* Trust Strip */}
       <section className="py-16 bg-white overflow-hidden border-t border-gray-50">
         <div className="container-custom">
-          <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-12">Trusted by India's leading medical networks</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 hover:opacity-100 transition-opacity">
+          <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-12">Trusted by visionary healthcare providers</p>
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20">
             {logos.map((logo) => (
-              <span key={logo} className="text-2xl font-black text-gray-900 grayscale hover:grayscale-0 transition-all cursor-default">{logo}</span>
+              <div key={logo.name} className="flex items-center gap-2 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all cursor-default text-gray-900">
+                {logo.icon}
+                <span className="text-xl font-black tracking-tight">{logo.name}</span>
+              </div>
             ))}
           </div>
         </div>

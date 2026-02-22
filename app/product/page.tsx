@@ -42,7 +42,7 @@ export default function ProductPage() {
     {
       icon: <FileText className="w-8 h-8" />,
       title: "Blockchain Based Data Storage",
-      desc: "HIPAA-style encryption with granular consent controls and full audit trails for patient safety.",
+      desc: "Securely store patients data using blockchain with HIPAA-style encryption and full audit trails for unmatched safety.",
       color: "#2AA9A1"
     },
     {
