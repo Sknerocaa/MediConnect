@@ -7,6 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ─── Hospital ──────────────────────────────────────────────────────────────────
@@ -271,6 +272,7 @@ enum InventoryRequestStatus {
   REJECTED
   FULFILLED
   CANCELLED
+  DRAFT
 }
 
 // ─── Transfer ──────────────────────────────────────────────────────────────────
@@ -337,7 +339,7 @@ enum RecordType {
 model Consent {
   id           String   @id @default(cuid())
   patientId    String
-  patient      Patient  @relation(fields: [patientId], references: [id])
+  patient  Patient  @relation(fields: [patientId], references: [id])
   grantedById  String
   grantedBy    User     @relation("ConsentGrantedBy", fields: [grantedById], references: [id])
   scope        String   // e.g., "medical_records", "transfer_history"
