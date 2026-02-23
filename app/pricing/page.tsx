@@ -32,7 +32,7 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
 const plans = [
   {
     name: "Starter",
-    price: "₹79,999",
+    price: "₹40k - 70k",
     period: "/month",
     description: "For single hospitals starting their network journey.",
     features: [
@@ -48,7 +48,7 @@ const plans = [
   },
   {
     name: "Growth",
-    price: "₹1,19,999",
+    price: "₹80k - 1 Lakh",
     period: "/month",
     description: "For growing networks needing full interoperability.",
     features: [
