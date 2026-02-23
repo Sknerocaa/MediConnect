@@ -364,35 +364,6 @@ export default function DemoPage() {
                 </div>
               </div>
 
-              {/* Testimonial */}
-              <div className="bg-teal-50 rounded-3xl border border-teal-100 p-8">
-                <div className="flex gap-0.5 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 text-amber-400 fill-amber-400"
-                    />
-                  ))}
-                </div>
-                <p className="text-sm text-teal-900 italic leading-relaxed mb-5 font-medium">
-                  &quot;The demo was incredibly detailed. We were live within 24
-                  hours of signing up. MediConnect transformed our network
-                  operations completely.&quot;
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-teal-200 flex items-center justify-center font-bold text-teal-800 text-sm">
-                    PN
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-teal-900">
-                      Dr. Priya Nair
-                    </p>
-                    <p className="text-xs text-teal-600 font-semibold">
-                      Apollo Hospitals, Chennai
-                    </p>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           </div>
         </div>

@@ -48,7 +48,7 @@ const plans = [
   },
   {
     name: "Growth",
-    price: "₹80k - 1 Lakh",
+    price: "₹99k",
     period: "/month",
     description: "For growing networks needing full interoperability.",
     features: [
